@@ -1,4 +1,9 @@
 #include <allegro.h>
+#include "DataFileReader.h"
+#include "RandomDataGenerator.h"
+#include "InputData.h"
+#include "RandomSolver.h"
+#include "Solution.h"
 
 int main() {
 	allegro_init();
@@ -6,16 +11,31 @@ int main() {
 
 	install_keyboard();
 	//install_mouse();
+	
+	DataSource* dataFile = new DataFileReader("input.txt");
+	DataSource* source = new RandomDataGenerator();
+
+	InputData* input = source->getData();
+	delete dataFile;
+	delete source;
+
+	Solver* solver = new RandomSolver();
+	Solution* solution = solver->process(input);
+	delete input;
+	delete solver;
+
+	solution->saveToFile("solution.txt");
 
 	BITMAP* buf = create_bitmap(SCREEN_W, SCREEN_H);
 
 	while (!key[KEY_ESC]) {
 		clear_to_color(buf, 0);
-		circle(buf, 200, 200, 100, makecol(255, 255, 0));
+		solution->draw(buf, 0, 0);
 		blit(buf, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 
 		rest(10);
 	}
+	delete solution;
 	destroy_bitmap(buf);
 
 	allegro_exit();
