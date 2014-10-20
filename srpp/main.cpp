@@ -1,4 +1,5 @@
 #include <allegro.h>
+#include <ctime>
 #include "DataFileReader.h"
 #include "RandomDataGenerator.h"
 #include "InputData.h"
@@ -6,8 +7,9 @@
 #include "Solution.h"
 
 int main() {
+	srand(time(NULL));
 	allegro_init();
-	set_gfx_mode(GFX_AUTODETECT_WINDOWED, 640, 480, 0, 0);
+	set_gfx_mode(GFX_AUTODETECT_WINDOWED, 600, 600, 0, 0);
 
 	install_keyboard();
 	//install_mouse();
@@ -15,7 +17,7 @@ int main() {
 	DataSource* dataFile = new DataFileReader("input.txt");
 	DataSource* source = new RandomDataGenerator();
 
-	InputData* input = source->getData();
+	InputData* input = dataFile->getData();
 	delete dataFile;
 	delete source;
 

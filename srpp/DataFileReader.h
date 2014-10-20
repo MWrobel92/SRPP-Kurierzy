@@ -10,5 +10,7 @@ public:
 	~DataFileReader();
 	InputData* getData();
 
+private:
+	InputData* data;
 };
 

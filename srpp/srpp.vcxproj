@@ -80,21 +80,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="City.cpp" />
     <ClCompile Include="DataFileReader.cpp" />
     <ClCompile Include="DataSource.cpp" />
     <ClCompile Include="InputData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RandomDataGenerator.cpp" />
     <ClCompile Include="RandomSolver.cpp" />
+    <ClCompile Include="Route.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="Solver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="City.h" />
     <ClInclude Include="DataFileReader.h" />
     <ClInclude Include="DataSource.h" />
     <ClInclude Include="InputData.h" />
     <ClInclude Include="RandomDataGenerator.h" />
     <ClInclude Include="RandomSolver.h" />
+    <ClInclude Include="Route.h" />
     <ClInclude Include="Solution.h" />
     <ClInclude Include="Solver.h" />
   </ItemGroup>
