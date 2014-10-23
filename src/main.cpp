@@ -11,14 +11,11 @@
 int main() {
 
 	srand(time(NULL));
-
 	
 	DataSource* dataFile = new DataFileReader("input.txt");
-	//DataSource* source = new RandomDataGenerator();
 
 	InputData* input = dataFile->getData();
 	delete dataFile;
-	//delete source;
 
 	//Start pomiaru czasu
 

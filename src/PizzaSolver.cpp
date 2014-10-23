@@ -1,7 +1,7 @@
 #include "PizzaSolver.h"
 
 
-PizzaSolver::PizzaSolver() : liczbaOptymalizacji(5)
+PizzaSolver::PizzaSolver() : liczbaOptymalizacji(10)
 {
 }
 
@@ -117,58 +117,40 @@ Route* PizzaSolver::processPart(vector<City*> partOfCities) {
 
 bool PizzaSolver::optimalizePart(vector<City*> &partOfCities)
 {
-	int i, j; // Indeksy punktow
-	int k; // Rozmiar skoku
+	int i;
 	bool sthChanged = false;
 	City* temporary;
 
-	// Próba optymalizacji listy poprzez proste zamiany
-	for (k = (partOfCities.size()-1); k > 0 ; --k) {
+	// Próba optymalizacji listy poprzez zamiany s¹siednich wêz³ów miejscami
+	for (i = 0; i < partOfCities.size()-2; ++i) {
+		
+		double d1, d2; // Odleg³oœci obecne
+		double a1, a2; // Odleg³oœci alternatywne
 
-		for (i = 0; (i+k) < (partOfCities.size()-1); ++i) {
+		if (i == 0) {
+			d1 = partOfCities[0]->distanceToCenter;
+			a1 = partOfCities[1]->distanceToCenter;
+		}
+		else {
+			d1 = partOfCities[i]->distanceTo(partOfCities[i-1]);
+			a1 = partOfCities[i+1]->distanceTo(partOfCities[i-1]);
+		}
+				
+		if (i == (partOfCities.size()-2)) {
+			d2 = partOfCities[i+1]->distanceToCenter;
+			a2 = partOfCities[i]->distanceToCenter;
+		}
+		else {
+			d2 = partOfCities[i+1]->distanceTo(partOfCities[i+2]);
+			a2 = partOfCities[i]->distanceTo(partOfCities[i+2]);
+		}
 
-			j = i+k;
-			//Rozwa¿amy mo¿liwoœæ zamiany miejscami punktów i oraz j.
-
-			double d1, d2, d3, d4; // Odleg³oœci obecne
-			double a1, a2, a3, a4; // Odleg³oœci alternatywne
-
-			if (i == 0) {
-				d1 = partOfCities[0]->distanceToCenter ;
-				a1 = partOfCities[2]->distanceToCenter;
-			}
-			else {
-				d1 = partOfCities[i]->distanceTo(partOfCities[i-1]);
-				a1 = partOfCities[j]->distanceTo(partOfCities[i-1]);
-			}
-
-			if (j == (partOfCities.size()-1) ) {
-				d4 = partOfCities[j]->distanceToCenter;
-				a4 = partOfCities[i]->distanceToCenter;
-			}
-			else {
-				d4 = partOfCities[j]->distanceTo(partOfCities[j+1]);
-				a4 = partOfCities[i]->distanceTo(partOfCities[j+1]);
-			}
-
-			if ((i+1) == j) {
-				d2 = d3 = a2 = a3 = 0; // Jeœli wêz³y s¹ s¹siaduj¹ce, œrodek mozna pomin¹æ
-			}
-			else {
-				d2 = partOfCities[i]->distanceTo(partOfCities[i+1]);
-				d3 = partOfCities[j]->distanceTo(partOfCities[j-1]);
-				a2 = partOfCities[i]->distanceTo(partOfCities[j-1]);
-				a3 = partOfCities[j]->distanceTo(partOfCities[i+1]);
-			}
-
-
-			if ((a1 + a2 + a3 + a4) < (d1 + d2 + d3 + d4)) {
-				//Ewentualna zamiana
-				temporary = partOfCities[i];
-				partOfCities[i] = partOfCities[j];
-				partOfCities[j] = temporary;
-				sthChanged = true;
-			}
+		if ((a1 + a2) < (d1 + d2)) {
+			// Stwierdziliœmy, ¿e zamieniamy
+			temporary = partOfCities[i+1];
+			partOfCities[i+1] = partOfCities[i];
+			partOfCities[i] = temporary;
+			sthChanged = true;
 		}
 		
 

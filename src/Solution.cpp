@@ -32,13 +32,3 @@ void Solution::saveToFile(std::string filename) {
 
 	file.close();
 }
-
-/*
-void Solution::draw(BITMAP* bmp, int x, int y) {
-	for (int route = 0; route < routes.size(); ++route) {
-		routes[route]->draw(bmp, x, y, route, routes.size());
-	}
-	
-
-}
-*/
