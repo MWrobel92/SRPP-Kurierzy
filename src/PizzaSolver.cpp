@@ -5,14 +5,12 @@ PizzaSolver::PizzaSolver() : liczbaOptymalizacji(10)
 {
 }
 
-
 PizzaSolver::~PizzaSolver()
 {
 }
 
 Solution* PizzaSolver::process(InputData* input) {
 
-	vector<Route*> routes;
 	int k = input->getK();
 	vector<City*> cities = input->getCities();
 	warehouse = input->getWarehouse();
@@ -33,6 +31,35 @@ Solution* PizzaSolver::process(InputData* input) {
 		cities[j] = temporary;
 	}
 
+	Solution* solution = singleProcess(cities, k);
+	Solution* newSolution;
+
+	// Obracanie pizzy po kawa³ku
+	for (i = 1; i < k; ++i) { // Ma siê wykonaæ k-1 razy
+		
+		City* temporary = cities[0];
+		temporary->angle += 2 * 3.14159; // + 2 * pi
+
+		for (j = 1; j < cities.size(); ++j) {
+			cities[j-1] = cities[j];
+		}
+
+		cities[j-1] = temporary;
+		newSolution = singleProcess(cities, k);
+
+		if (newSolution->getLength() < solution->getLength()) {
+			solution = newSolution;
+		}
+	}
+
+	return solution;
+}
+
+Solution* PizzaSolver::singleProcess(vector<City*> cities, int k) {
+
+	int i, j;
+	vector<Route*> routes;
+
 	//Podzia³ pizzy na kawa³ki ;-)
 	vector<vector<City*>> fragmentedCitiesList;
 	for (i = 0; i < cities.size();) {
@@ -49,7 +76,8 @@ Solution* PizzaSolver::process(InputData* input) {
 	}
 
 	return new Solution(routes);
-}
+
+};
 
 Route* PizzaSolver::processPart(vector<City*> partOfCities) {
 
@@ -122,7 +150,7 @@ bool PizzaSolver::optimalizePart(vector<City*> &partOfCities)
 	City* temporary;
 
 	// Próba optymalizacji listy poprzez zamiany s¹siednich wêz³ów miejscami
-	for (i = 0; i < partOfCities.size()-2; ++i) {
+	for (i = 0; i < partOfCities.size()-1; ++i) {
 		
 		double d1, d2; // Odleg³oœci obecne
 		double a1, a2; // Odleg³oœci alternatywne
