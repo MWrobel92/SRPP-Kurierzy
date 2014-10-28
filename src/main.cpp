@@ -4,6 +4,7 @@
 #include "InputData.h"
 #include "RandomSolver.h"
 #include "PizzaSolver.h"
+#include "BruteforceSolver.h"
 #include "Solution.h"
 #include <Windows.h>
 #include <iostream>
@@ -22,7 +23,7 @@ int main() {
 	//Inicjalizacja timera
 	long long time;
 	time = GetTickCount();
-	Solver* solver = new PizzaSolver();
+	Solver* solver = new BruteforceSolver();
 	Solution* solution = solver->process(input);
 	time = GetTickCount() - time;
 

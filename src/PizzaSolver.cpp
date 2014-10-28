@@ -61,7 +61,7 @@ Solution* PizzaSolver::singleProcess(vector<City*> cities, int k) {
 	vector<Route*> routes;
 
 	//Podzia³ pizzy na kawa³ki ;-)
-	vector<vector<City*>> fragmentedCitiesList;
+	vector<vector<City*> > fragmentedCitiesList;
 	for (i = 0; i < cities.size();) {
 		vector<City*> part;
 		for (j = 0; j < k && i < cities.size(); ++j, ++i) {
