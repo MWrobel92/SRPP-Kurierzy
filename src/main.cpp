@@ -23,7 +23,8 @@ int main() {
 	//Inicjalizacja timera
 	long long time;
 	time = GetTickCount();
-	Solver* solver = new BruteforceSolver();
+//	Solver* solver = new BruteforceSolver();
+	Solver* solver = new PizzaSolver();
 	Solution* solution = solver->process(input);
 	time = GetTickCount() - time;
 

@@ -39,3 +39,4 @@ Icon
 srpp/Debug/*
 *.sdf
 *.opensdf
+*.o

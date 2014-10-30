@@ -19,7 +19,7 @@ public:
 
 private:
 
-	Solution* singleProcess(vector<City*> cities, int k);
+	Solution* singleProcess(vector<InputData*> input);
 	Route* processPart(vector<City*> partOfCities);
 	bool optimalizePart(vector<City*> &partOfCities);
 };

@@ -1,5 +1,5 @@
 #include "PizzaSolver.h"
-
+#include "PizzaDivider.h"
 
 PizzaSolver::PizzaSolver() : liczbaOptymalizacji(10)
 {
@@ -10,33 +10,20 @@ PizzaSolver::~PizzaSolver()
 }
 
 Solution* PizzaSolver::process(InputData* input) {
-
-	int k = input->getK();
-	vector<City*> cities = input->getCities();
 	warehouse = input->getWarehouse();
 
-	//Sortowanie miast rosnaco wg k¹ta (sortowanie przez proste wstawianie)
-	int i, j;
-	City* temporary;
-	for (i = 1; i < cities.size(); ++i) {
-		temporary = cities[i];
-		for (j = i; j > 0; --j) {
-			if (cities[j-1]->angle < temporary->angle) {
-				break;
-			}
-			else {
-				cities[j] = cities[j-1];
-			}
-		}
-		cities[j] = temporary;
-	}
+	PizzaDivider* divider = new PizzaDivider();
+	vector<InputData*> divided = divider->divide(input, 0);
 
-	Solution* solution = singleProcess(cities, k);
+	Solution* solution = singleProcess(divided);
 	Solution* newSolution;
-
+	int i;
+	int k = input->getK();
 	// Obracanie pizzy po kawa³ku
 	for (i = 1; i < k; ++i) { // Ma siê wykonaæ k-1 razy
 		
+		vector<InputData*> divided = divider->divide(input, i);
+/*
 		City* temporary = cities[0];
 		temporary->angle += 2 * 3.14159; // + 2 * pi
 
@@ -45,21 +32,24 @@ Solution* PizzaSolver::process(InputData* input) {
 		}
 
 		cities[j-1] = temporary;
-		newSolution = singleProcess(cities, k);
+*/
+		newSolution = singleProcess(divided);
 
 		if (newSolution->getLength() < solution->getLength()) {
 			solution = newSolution;
 		}
 	}
 
+	delete divider;
+
 	return solution;
 }
 
-Solution* PizzaSolver::singleProcess(vector<City*> cities, int k) {
+Solution* PizzaSolver::singleProcess(vector<InputData*> input) {
 
 	int i, j;
 	vector<Route*> routes;
-
+/*
 	//Podzia³ pizzy na kawa³ki ;-)
 	vector<vector<City*> > fragmentedCitiesList;
 	for (i = 0; i < cities.size();) {
@@ -69,10 +59,10 @@ Solution* PizzaSolver::singleProcess(vector<City*> cities, int k) {
 		}
 		fragmentedCitiesList.push_back(part);
 	}
-
+*/
 	//Posortowanie ka¿dego fragmentu
-	for (i = 0; i < fragmentedCitiesList.size(); ++i) {
-		routes.push_back(processPart(fragmentedCitiesList[i]));
+	for (i = 0; i < input.size(); ++i) {
+		routes.push_back(processPart(input[i]->getCities()));
 	}
 
 	return new Solution(routes);
