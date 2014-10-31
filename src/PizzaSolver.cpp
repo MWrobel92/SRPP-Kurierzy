@@ -38,6 +38,7 @@ Solution* PizzaSolver::process(InputData* input) {
 		if (newSolution->getLength() < solution->getLength()) {
 			solution = newSolution;
 		}
+		break;//FIXME DEBUG
 	}
 
 	delete divider;
