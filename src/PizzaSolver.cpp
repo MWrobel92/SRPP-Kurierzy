@@ -23,7 +23,8 @@ Solution* PizzaSolver::process(InputData* input) {
 	for (i = 1; i < k; ++i) { // Ma siê wykonaæ k-1 razy
 		
 		vector<InputData*> divided = divider->divide(input, i);
-/*
+
+		/*
 		City* temporary = cities[0];
 		temporary->angle += 2 * 3.14159; // + 2 * pi
 
