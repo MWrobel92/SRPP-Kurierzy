@@ -6,6 +6,7 @@
 #include "PizzaSolver.h"
 #include "BruteforceSolver.h"
 #include "Solution.h"
+#include "NearestNeighbourSolver.h"
 #include <Windows.h>
 #include <iostream>
 
@@ -24,7 +25,8 @@ int main() {
 	long long time;
 	time = GetTickCount();
 //	Solver* solver = new BruteforceSolver();
-	Solver* solver = new PizzaSolver();
+//	Solver* solver = new PizzaSolver();
+	Solver* solver = new NearestNeighbourSolver();
 	Solution* solution = solver->process(input);
 	time = GetTickCount() - time;
 
