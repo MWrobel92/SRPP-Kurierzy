@@ -10,11 +10,13 @@
 #include <Windows.h>
 #include <iostream>
 
-int main() {
+int main(int argc, char* argv[]) {
 
 	srand(time(NULL));
-	
-	DataSource* dataFile = new DataFileReader("input.txt");
+	if (argc == 1) {
+		std::cout << "Podaj argument: nazwa pliku z zadaniem.\n";
+	}
+	DataSource* dataFile = new DataFileReader(argv[1]);
 
 	InputData* input = dataFile->getData();
 	delete dataFile;
@@ -24,21 +26,18 @@ int main() {
 	//Inicjalizacja timera
 	long long time;
 	time = GetTickCount();
-//	Solver* solver = new BruteforceSolver();
-//	Solver* solver = new PizzaSolver();
+	//	Solver* solver = new BruteforceSolver();
+	//	Solver* solver = new PizzaSolver();
 	Solver* solver = new NearestNeighbourSolver();
 	Solution* solution = solver->process(input);
 	time = GetTickCount() - time;
 
 	delete input;
 	delete solver;
-
+	std::cout << "Plik: " << argv[1] << "\n";
 	std::cout << "Dlugosc wszystkich sciezek:\t" << solution->getLength() << "\n";
-	std::cout << "Czas wykonania algorytmu:\t" << time << "ms\n";
+	std::cout << "Czas wykonania algorytmu:\t" << time << "ms\n\n";
 
-	solution->saveToFile("solution.txt");
-
-	system("pause");
-
+	solution->saveToFile("output\\" + string(argv[1]) + "_out");
 	return 0;
 }
