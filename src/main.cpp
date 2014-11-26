@@ -7,6 +7,7 @@
 #include "BruteforceSolver.h"
 #include "Solution.h"
 #include "NearestNeighbourSolver.h"
+#include "Solver2opt.h"
 #include <Windows.h>
 #include <iostream>
 
@@ -28,15 +29,16 @@ int main(int argc, char* argv[]) {
 	time = GetTickCount();
 	//	Solver* solver = new BruteforceSolver();
 	//	Solver* solver = new PizzaSolver();
-	Solver* solver = new NearestNeighbourSolver();
+	//  Solver* solver = new NearestNeighbourSolver();
+	Solver* solver = new Solver2opt();
 	Solution* solution = solver->process(input);
 	time = GetTickCount() - time;
 
 	delete input;
 	delete solver;
-	std::cout << "Plik: " << argv[1] << "\n";
-	std::cout << "Dlugosc wszystkich sciezek:\t" << solution->getLength() << "\n";
-	std::cout << "Czas wykonania algorytmu:\t" << time << "ms\n\n";
+	std::cout << argv[1] << "; ";
+	std::cout << solution->getLength() << "; ";
+	std::cout << time << "ms\n";
 
 	solution->saveToFile("output\\" + string(argv[1]) + "_out");
 	return 0;
