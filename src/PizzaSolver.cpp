@@ -9,58 +9,50 @@ PizzaSolver::~PizzaSolver()
 {
 }
 
-Solution* PizzaSolver::process(InputData* input) {
+vector<Solution*> PizzaSolver::makeSolutions(InputData* input) {
+
 	warehouse = input->getWarehouse();
 
 	PizzaDivider* divider = new PizzaDivider();
 	vector<InputData*> divided = divider->divide(input, 0);
 
-	Solution* solution = singleProcess(divided);
-	Solution* newSolution;
-	int i;
-	int k = input->getK();
+	vector<Solution*> solutions;
+	solutions.push_back(singleProcess(divided));
+
+	k = input->getK();
+
 	// Obracanie pizzy po kawa³ku
-	for (i = 1; i < k; ++i) { // Ma siê wykonaæ k-1 razy
+	for (int i = 1; i < k; ++i) { // Ma siê wykonaæ k-1 razy
 		
 		vector<InputData*> divided = divider->divide(input, i);
-
-		/*
-		City* temporary = cities[0];
-		temporary->angle += 2 * 3.14159; // + 2 * pi
-
-		for (j = 1; j < cities.size(); ++j) {
-			cities[j-1] = cities[j];
-		}
-
-		cities[j-1] = temporary;
-*/
-		newSolution = singleProcess(divided);
-
-		if (newSolution->getLength() < solution->getLength()) {
-			solution = newSolution;
-		}
+		solutions.push_back(singleProcess(divided));
 	}
 
 	delete divider;
 
-	return solution;
+	return solutions;
+}
+
+Solution* PizzaSolver::process(InputData* input) {
+	
+	vector<Solution*> solutions = makeSolutions(input);
+	Solution* bestSolution = solutions.at(0);
+
+	for (int i = 1; i < k; ++i) { // Ma siê wykonaæ k-1 razy
+
+		if (solutions.at(i)->getLength() < bestSolution->getLength()) {
+			bestSolution = solutions.at(i);
+		}
+	}
+
+	return bestSolution;
 }
 
 Solution* PizzaSolver::singleProcess(vector<InputData*> input) {
 
 	int i, j;
 	vector<Route*> routes;
-/*
-	//Podzia³ pizzy na kawa³ki ;-)
-	vector<vector<City*> > fragmentedCitiesList;
-	for (i = 0; i < cities.size();) {
-		vector<City*> part;
-		for (j = 0; j < k && i < cities.size(); ++j, ++i) {
-			part.push_back(cities[i]);
-		}
-		fragmentedCitiesList.push_back(part);
-	}
-*/
+
 	//Posortowanie ka¿dego fragmentu
 	for (i = 0; i < input.size(); ++i) {
 		routes.push_back(processPart(input[i]->getCities()));

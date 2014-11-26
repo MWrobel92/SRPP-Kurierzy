@@ -8,16 +8,19 @@ class Route
 {
 public:
 	Route(City* startingCity);
+	Route(const Route& old);
 	~Route();
+
 	void append(City* city);
-	void removeLast();
-	//void draw(BITMAP* bmp, int x, int y, int routeID, int routeCount);
 	double getLength();
+	int getNumberOfCities();
 
-	//d³ugoœæ od pierwszego do ostatniego miasta, bez powrotu
-	double getPartialLength();
-
+	City* getCityAt(int id);
+	void setCityAt(City* toSet, int id);
+	void moveCity(int position, int newPosition);
+	
 	friend std::ostream& operator<<(std::ostream& os, Route& route);
+
 private:
 	std::vector<City*> route;
 };
