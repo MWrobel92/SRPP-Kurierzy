@@ -8,6 +8,7 @@
 #include "Solution.h"
 #include "NearestNeighbourSolver.h"
 #include "Solver2opt.h"
+#include "Solver3opt.h"
 #include <Windows.h>
 #include <iostream>
 
@@ -30,7 +31,8 @@ int main(int argc, char* argv[]) {
 	//	Solver* solver = new BruteforceSolver();
 	//	Solver* solver = new PizzaSolver();
 	//  Solver* solver = new NearestNeighbourSolver();
-	Solver* solver = new Solver2opt();
+	//	Solver* solver = new Solver2opt(true);
+	  Solver* solver = new Solver3opt(true);
 	Solution* solution = solver->process(input);
 	time = GetTickCount() - time;
 

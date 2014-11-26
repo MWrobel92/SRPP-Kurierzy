@@ -85,6 +85,15 @@ void Route::swapSubroute(int i, int j) {
 	}
 }
 
+void Route::perform3optSwap(int i, int j, int k, int m) {
+	bool swapPieces = (m & 0x4);
+	bool swapLeft = (m & 0x2);
+	bool swapRight = (m & 0x1);
+	if (swapPieces) swapSubroute(i, k);
+	if (swapLeft)   swapSubroute(i, j);
+	if (swapRight)  swapSubroute(j + 1, k);
+}
+
 std::ostream& operator<<(std::ostream& os, Route& route) {
 	for (int i = 0; i < route.route.size(); ++i) {
 		os << route.route[i]->id << ' ';
