@@ -48,8 +48,14 @@ void City::setParameters(City* warmhouse) {
     }
 }
 
+bool City::operator==(City& secondCity) {
+	return id == secondCity.id;
+}
+
 std::istream& operator>>(std::istream& is, City& city) {
 	is >> city.x;
 	is >> city.y;
 	return is;
 }
+
+

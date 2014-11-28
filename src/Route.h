@@ -18,7 +18,12 @@ public:
 	City* getCityAt(int id);
 	void setCityAt(City* toSet, int id);
 	void moveCity(int position, int newPosition);
-	
+	void removeCityAt(int id);
+
+	//d³ugoœæ od pierwszego do ostatniego miasta, bez powrotu
+	double getPartialLength();
+	void removeLast();
+
 	friend std::ostream& operator<<(std::ostream& os, Route& route);
 
 private:

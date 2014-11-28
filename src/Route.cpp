@@ -39,6 +39,13 @@ void Route::setCityAt(City* toSet, int id) {
 	route.at(id) = toSet;
 };
 
+void Route::removeCityAt(int id) {
+	for (int i=id; i<route.size()-1; ++i) {
+		route.at(i) = route.at(i+1);
+	}
+	route.pop_back();
+}
+
 void Route::moveCity(int position, int newPosition){
 	//Przestawia miasta z pierwszej pozycji na drug¹
 
@@ -68,4 +75,16 @@ std::ostream& operator<<(std::ostream& os, Route& route) {
 	}
 	os << '0';
 	return os;
+}
+
+void Route::removeLast() {
+	route.erase(route.end() - 1);
+}
+
+double Route::getPartialLength() {
+	double length = 0.0;
+	for (int i = 0; i < route.size() - 1; ++i) {
+		length += route[i]->distanceTo(route[i + 1]);
+	}
+	return length;
 }

@@ -11,6 +11,7 @@ public:
 	double angle;
 	double distanceToCenter;
 	double distanceTo(City* city);
+	bool operator==(City& secondCity);
 
 	/// Ta funkcja wylicza dystans do magazynu i kat nachylenia wzgledem "osi x".
 	void setParameters(City* warmhouse);

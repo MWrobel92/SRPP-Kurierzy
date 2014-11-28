@@ -13,8 +13,11 @@ public:
 
 	void saveToFile(std::string filename);
 	double getLength();
+
 	void mutate();
 	void mutateSoftly();
+	void crossbreedWith(Route* newRoute, int maxLength);
+	Solution* crossbreed(Solution* secondSol, int maxLength);
 
 private:
 	std::vector<Route*> routes;

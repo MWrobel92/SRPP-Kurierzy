@@ -1,5 +1,6 @@
 #pragma once
 #include "PizzaSolver.h"
+#include "NearestNeighbourSolver.h"
 #include "InputData.h"
 #include "Route.h"
 #include <vector>
@@ -21,6 +22,8 @@ public:
 private:
 
 	unsigned int bestSolutionLength;
+	int generationSize;
+	int getK;
 
 	Solution* findBestSolution(vector<Solution*> &solutions);
 	Solution*  generation(vector<Solution*> &solutions);

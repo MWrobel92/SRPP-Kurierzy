@@ -2,10 +2,10 @@
 
 MemethicSolver::MemethicSolver()
 {
-	generations = 100;
-	hardMutations = 2;
+	generations = 50;
 	hardMutations = 3;
-
+	softMutations = 10;
+	crossbreedings = 3;
 }
 
 MemethicSolver::~MemethicSolver()
@@ -14,9 +14,13 @@ MemethicSolver::~MemethicSolver()
 
 Solution* MemethicSolver::process(InputData* input) {
 
+	getK = input->getK();
+	generationSize = getK * 100;
 	// Generowanie populacji pocz¹tkowej
 	PizzaSolver pizzaSolver;
+	NearestNeighbourSolver nnSolver;
 	vector<Solution*> solutions = pizzaSolver.makeSolutions(input);
+	solutions.push_back(nnSolver.process(input));
 
 	Solution* bestSolution = findBestSolution(solutions);
 	Solution* copyOfBestSolution = new Solution(*bestSolution);
@@ -35,6 +39,9 @@ Solution* MemethicSolver::process(InputData* input) {
 		}
 
 	}
+
+	// TYLKO DO TESTOWANIA!!!
+	// copyOfBestSolution = copyOfBestSolution->crossbreed(solutions.at(getK), getK);
 
 	// Usuniêcie ca³ej populacji (najlepszy rezultat i tak ma swoj¹ kopiê)
 	for (i=0; i<solutions.size(); ++i) {
@@ -65,20 +72,48 @@ Solution* MemethicSolver::generation(vector<Solution*> &solutions) {
 	int numberOfSolutions = solutions.size();
 
 	// Krzy¿owanie
+	for (i=0; i<crossbreedings; ++i) {
+		solutions.push_back(solutions.at(rand()%numberOfSolutions)->crossbreed(solutions.at(rand()%numberOfSolutions), getK));
+	}
 
 	// Mutacja
 	for (i=0; i<hardMutations; ++i) {
 		Solution* solutionToMutate = solutions.at(rand()%numberOfSolutions);
+		solutions.push_back(new Solution(*solutionToMutate)); // Zapamiêtanie kopii
 		solutionToMutate->mutate();
 	}
 	
 	for (i=0; i<softMutations; ++i) {
-		Solution* solutionToMutate = solutions.at(rand()%numberOfSolutions);
+		Solution* solutionToMutate = solutions.at(rand()%numberOfSolutions);		
+		solutions.push_back(new Solution(*solutionToMutate)); // Zapamiêtanie kopii
 		solutionToMutate->mutateSoftly();
 	}
 
 	// Selekcja
+	int j;
+	Solution* temp;
 
-	return findBestSolution(solutions);
+	// // Sortowanie przez proste wstawianie
+	for (i=1; i<solutions.size(); ++i) {
+		temp = solutions.at(i);
+		for (j=i; j>0; --j) {
+			if (solutions.at(j-1) < solutions.at(j)) {
+				solutions.at(j) = solutions.at(j-1);
+			}
+			else {
+				break;
+			}
+		}
+		solutions.at(j) = temp;
+	}
+
+	// // Usuniêcie nadmiarowych rozwi¹zañ
+	for (i=solutions.size(); i>generationSize; --i) {
+		Solution* toDelete = solutions.at(i-1);
+		solutions.pop_back();
+		delete toDelete;
+	}
+
+	return solutions.at(0);
 }
 
