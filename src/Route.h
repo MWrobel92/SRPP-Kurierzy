@@ -16,9 +16,6 @@ public:
 	double getLength();
 	int getNumberOfCities();
 
-	//d³ugoœæ od pierwszego do ostatniego miasta, bez powrotu
-	double getPartialLength();
-
 	City* getCityAt(int id);
 	void setCityAt(City* toSet, int id);
 	void moveCity(int position, int newPosition);
@@ -27,7 +24,6 @@ public:
 
 	//d³ugoœæ od pierwszego do ostatniego miasta, bez powrotu
 	double getPartialLength();
-	void removeLast();
 
 	//odwróæ podœcie¿kê z przedzia³u [i, j]
 	//np. dla œcie¿ki 0 1 2 3 4 5 po wykonaniu z parametrami (2, 5)
