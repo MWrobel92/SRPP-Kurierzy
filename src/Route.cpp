@@ -28,8 +28,8 @@ double Route::getLength() {
 	InputData* input = route[0]->getInputData(); //for precalculated distance
 
 	for (int i = 0; i < route.size(); ++i) {
-//		length += route[i]->distanceTo(route[prev]);
-		length += input->getDistance(route[i]->id, route[prev]->id); //FIXME
+		length += route[i]->distanceTo(route[prev]);
+//		length += input->getDistance(route[i]->id, route[prev]->id); //FIXME
 		prev = i;
 	}
 	return length;

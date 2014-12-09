@@ -49,11 +49,8 @@ int main(int argc, char* argv[]) {
 	delete input;
 	delete solver;
 
-	std::cout << "Plik: " << fileName << "\n";
-	std::cout << "Dlugosc wszystkich sciezek:\t" << solution->getLength() << "\n";
-	std::cout << "Czas wykonania algorytmu:\t" << time << "ms\n\n";
-
-	solution->saveToFile("output\\" + fileName + "_out");
-	system("pause");
+	std::cout << fileName << "; ";
+	std::cout << solution->getLength() << "; ";
+	std::cout << time << "ms\n";	solution->saveToFile("output\\" + fileName + "_out");
 	return 0;
 }
