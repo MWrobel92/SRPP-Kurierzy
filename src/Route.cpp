@@ -24,8 +24,12 @@ void Route::removeLast() {
 double Route::getLength() {
 	double length = 0.0;
 	int prev = route.size() - 1;
+
+	InputData* input = route[0]->getInputData(); //for precalculated distance
+
 	for (int i = 0; i < route.size(); ++i) {
-		length += route[i]->distanceTo(route[prev]);
+//		length += route[i]->distanceTo(route[prev]);
+		length += input->getDistance(route[i]->id, route[prev]->id); //FIXME
 		prev = i;
 	}
 	return length;
@@ -101,6 +105,10 @@ void Route::perform3optSwap(int i, int j, int k, int m) {
 	if (swapRight)  swapSubroute(j + 1, k);
 }
 
+std::vector<City*> Route::getCities() {
+	return route;
+}
+
 std::ostream& operator<<(std::ostream& os, Route& route) {
 	for (int i = 0; i < route.route.size(); ++i) {
 		os << route.route[i]->id << ' ';
@@ -108,3 +116,4 @@ std::ostream& operator<<(std::ostream& os, Route& route) {
 	os << '0';
 	return os;
 }
+

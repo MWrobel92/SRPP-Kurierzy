@@ -1,6 +1,7 @@
 #include "Solution.h"
 #include <fstream>
 #include <iomanip>
+#include <cstdlib>
 
 using namespace std;
 
@@ -50,14 +51,18 @@ void Solution::mutate () {
 	// Losowanie miast
 	int pathCount = routes.size();
 	int firstPathId = rand()%pathCount;
-	int secondPathId = (firstPathId + 1 + rand()%(pathCount-1))%pathCount; // Tak.
-	int firstCityId = rand()%(routes.at(firstPathId)->getNumberOfCities()-1)+1;
+
+	//	int secondPathId = (firstPathId + 1 + rand() % (pathCount - 1)) % pathCount; // Tak.
+	//inna mutacja: zamiana miast z dwóch s¹siednich œcie¿ek
+	int secondPathId = (firstPathId + 1) % pathCount;
+	int firstCityId = rand() % (routes.at(firstPathId)->getNumberOfCities() - 1) + 1;
 	int secondCityId = rand()%(routes.at(secondPathId)->getNumberOfCities()-1)+1;
 
 	// Zamiana miast miejscami
 	City* temporary = routes.at(firstPathId)->getCityAt(firstCityId);
 	routes.at(firstPathId)->setCityAt(routes.at(secondPathId)->getCityAt(secondCityId), firstCityId);
 	routes.at(secondPathId)->setCityAt(temporary, secondCityId);
+
 	
 }
 
@@ -81,7 +86,7 @@ void Solution::mutateSoftly () {
 void Solution::crossbreedWith(Route* newRoute, int maxLength) {
 
 	// Sprawdzenie, w której œcie¿ce jest ile punktów ze starej œcie¿ki
-	vector<vector<City*>> commonCities;
+	vector<vector<City*> > commonCities;
 	int i, j, k;
 	for (i=0; i<routes.size(); ++i) {
 		vector<City*> newVector;
@@ -179,4 +184,12 @@ Solution* Solution::crossbreed(Solution* secondSol, int maxLength) {
 	newSolution->crossbreedWith(routeToMove, maxLength);	
 
 	return newSolution;
+}
+
+int Solution::getRouteCount() {
+	return routes.size();
+}
+InputData* Solution::getRouteAsInputData(int i) {
+	return new InputData(routes[0]->getNumberOfCities(),
+		routes[0]->getCityAt(0), routes[i]->getCities()); //FIXME
 }

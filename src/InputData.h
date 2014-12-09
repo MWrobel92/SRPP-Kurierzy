@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "City.h"
+class City;
 
 class InputData
 {

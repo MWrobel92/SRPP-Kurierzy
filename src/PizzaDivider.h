@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "InputData.h"
+#include "City.h"
 
 class PizzaDivider {
 public:

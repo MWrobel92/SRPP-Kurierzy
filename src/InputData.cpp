@@ -1,8 +1,12 @@
 #include "InputData.h"
+#include "City.h"
 
 
 InputData::InputData(int k, City* warehouse, std::vector<City*> cities):
 	k(k), warehouse(warehouse), cities(cities) {
+	for (int i = 0; i < cities.size(); ++i) {
+		cities[i]->setInputData(this);
+	}
 
 }
 

@@ -3,6 +3,7 @@
 //#include <allegro.h>
 #include <ostream>
 #include "City.h"
+#include "InputData.h"
 
 class Route
 {
@@ -38,7 +39,7 @@ public:
 	void perform3optSwap(int i, int j, int k, int m);
 
 	friend std::ostream& operator<<(std::ostream& os, Route& route);
-
+	std::vector<City*> getCities();
 private:
 	std::vector<City*> route;
 };

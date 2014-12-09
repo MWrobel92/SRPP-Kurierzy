@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Route.h"
+#include "InputData.h"
 
 class Solution
 {
@@ -19,6 +20,8 @@ public:
 	void crossbreedWith(Route* newRoute, int maxLength);
 	Solution* crossbreed(Solution* secondSol, int maxLength);
 
+	int getRouteCount();
+	InputData* getRouteAsInputData(int i);
 private:
 	std::vector<Route*> routes;
 };

@@ -1,11 +1,13 @@
 #include"MemethicSolver.h"
+#include "Solver2opt.h"
+#include "RandomSolver.h"
+#include <iostream>
+#include <cstdlib>
 
 MemethicSolver::MemethicSolver()
 {
-	generations = 50;
-	hardMutations = 3;
-	softMutations = 10;
-	crossbreedings = 3;
+	softMutations = 0;
+	crossbreedings = 0;
 }
 
 MemethicSolver::~MemethicSolver()
@@ -15,12 +17,23 @@ MemethicSolver::~MemethicSolver()
 Solution* MemethicSolver::process(InputData* input) {
 
 	getK = input->getK();
-	generationSize = getK * 100;
+	generationSize = getK * 10;
+	hardMutations = generationSize;
+	generations = 1000 / generationSize;
 	// Generowanie populacji pocz¹tkowej
 	PizzaSolver pizzaSolver;
 	NearestNeighbourSolver nnSolver;
-	vector<Solution*> solutions = pizzaSolver.makeSolutions(input);
-	solutions.push_back(nnSolver.process(input));
+	Solver2opt solver2opt(false);
+	RandomSolver randomSolver;
+	vector<Solution*> solutions;
+	//	solutions.push_back(pizzaSolver.makeSolutions(input));
+	solutions.push_back(solver2opt.process(input));
+	//solutions.push_back(pizzaSolver.process(input));
+	for (int i = 0; i < generationSize; ++i) {
+//		solutions.push_back(randomSolver.process(input));
+		solutions.push_back(new Solution(*solutions[0]));
+	}
+	//	solutions.push_back(nnSolver.process(input));
 
 	Solution* bestSolution = findBestSolution(solutions);
 	Solution* copyOfBestSolution = new Solution(*bestSolution);
@@ -31,7 +44,7 @@ Solution* MemethicSolver::process(InputData* input) {
 
 		// Wygenerowanie kolejnego pokolenia
 		bestSolution = generation(solutions);
-
+		std::cerr << bestSolution->getLength() << " " << solutions.size() << endl;
 		// Zapisanie kopii najlepszego elementu w historii, aby siê nie utraci³
 		if (bestSolution->getLength() < copyOfBestSolution->getLength()) {
 			delete copyOfBestSolution;
@@ -85,8 +98,20 @@ Solution* MemethicSolver::generation(vector<Solution*> &solutions) {
 	
 	for (i=0; i<softMutations; ++i) {
 		Solution* solutionToMutate = solutions.at(rand()%numberOfSolutions);		
-		solutions.push_back(new Solution(*solutionToMutate)); // Zapamiêtanie kopii
+		//solutions.push_back(new Solution(*solutionToMutate)); // Zapamiêtanie kopii
 		solutionToMutate->mutateSoftly();
+	}
+
+	//Ulepsz rozwi¹zania (2-opt)
+	Solver2opt solver2opt(false);
+	for (i = 0; i < solutions.size(); ++i) {
+		Solution* old = solutions[i];
+		vector<Route*> routes;
+		for (int j = 0; j < old->getRouteCount(); ++j) {
+			routes.push_back(solver2opt.solveTSP(old->getRouteAsInputData(j)));
+		}
+		solutions[i] = new Solution(routes);
+		delete old;
 	}
 
 	// Selekcja
@@ -97,8 +122,9 @@ Solution* MemethicSolver::generation(vector<Solution*> &solutions) {
 	for (i=1; i<solutions.size(); ++i) {
 		temp = solutions.at(i);
 		for (j=i; j>0; --j) {
-			if (solutions.at(j-1) < solutions.at(j)) {
-				solutions.at(j) = solutions.at(j-1);
+//			if (solutions.at(j - 1) < solutions.at(j)) {
+			if (solutions.at(j - 1)->getLength() > temp->getLength()) {
+					solutions.at(j) = solutions.at(j - 1);
 			}
 			else {
 				break;
