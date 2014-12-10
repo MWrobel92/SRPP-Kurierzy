@@ -1,5 +1,6 @@
 #include"MemethicSolver.h"
 #include "Solver2opt.h"
+#include "Solver3opt.h"
 #include "RandomSolver.h"
 #include <iostream>
 #include <cstdlib>
@@ -24,10 +25,11 @@ Solution* MemethicSolver::process(InputData* input) {
 	PizzaSolver pizzaSolver;
 	NearestNeighbourSolver nnSolver;
 	Solver2opt solver2opt(false);
+	Solver3opt solver3opt(true);
 	RandomSolver randomSolver;
 	vector<Solution*> solutions;
 	//	solutions.push_back(pizzaSolver.makeSolutions(input));
-	solutions.push_back(solver2opt.process(input));
+	solutions.push_back(solver3opt.process(input));
 	//solutions.push_back(pizzaSolver.process(input));
 	for (int i = 0; i < generationSize; ++i) {
 //		solutions.push_back(randomSolver.process(input));
